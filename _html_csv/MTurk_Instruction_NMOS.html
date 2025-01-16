@@ -1,0 +1,117 @@
+<!-- You must include this JavaScript file -->
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+
+<!-- For the full list of available Crowd HTML Elements and their input/output documentation,
+      please refer to https://docs.aws.amazon.com/sagemaker/latest/dg/sms-ui-template-reference.html -->
+
+<!-- You must include crowd-form so that your task successfully submit answers -->
+<crowd-form answer-format="flatten-objects">
+
+    <!-- The crowd-classifier element will create a tool for the Worker to select the 
+          correct answer to your question -->
+    <crowd-classifier 
+        categories="['5 - Completely natural speech', '4.5', '4 - Mostly natural speech', '3.5', '3 - Equally natural and unnatural speech', '2.5', '2 - Mostly unnatural speech', '1.5','1 - Completely unnatural speech']"
+        header="Listen to the sample of the test audio and assess the naturalness (the accuracy of pronunciation, naturalness of prosody and intonation) of the audio based on how close it is to natural speech."
+        name="QMOS">
+        
+            <classification-target>
+                <strong>Test audio</strong>
+                <audio controls="" style="width: 100%">
+
+
+                    <!-- Your audio file URLs will be substituted for the "audio_url" variable 
+                          when you publish a batch with a CSV input file containing multiple 
+                          audio file URLs -->
+                    <source src="${audio_url}" type="audio/mpeg" />
+                </audio>
+                <strong>Transcripts: </strong> ${ref_text}
+            </classification-target>
+
+        <!-- Use the short-instructions section for quick instructions that the Worker
+              will see while working on the task. Including some basic examples of 
+              good and bad answers here can help get good results. You can include 
+              any HTML here. -->
+        <short-instructions>             
+            <p>
+                <strong>Please read all of the instructions carefully.</strong><br><br>
+                In this test, you'll listen to voice samples and rate the naturalness on a scale of 1 to 5.<br>
+                Please consider the naturalness of speech, accuracy of pronunciation and intonation when assigning your rating.<br><br>
+                <strong>It is important to concentrate on only naturalness of speech and disregard quality of the sound, such as noise.</strong><br><br>
+                A score closer to 5 implies a higher naturalness of the voice.<br>
+            </p>
+            <li>It is imperative that we ask you to please listen to the audio recordings in its entirety when rating it.</li><br>
+            <li><strong>In order to distinguish any instances of cheating, we may have inserted a few extremely abnormal sounds among the audio recordings. If you are not able to accurately assign 1 point ratings to these instances, your ratings may be entirely rejected.</strong></li><br>
+            <li>It's highly recommended to wear headphones or a headset and to be in a quiet environment for precise assessment.</li><br>
+            <li>If you need an example for scoring, please see the "More instructions" tab below.</li>
+        </short-instructions>
+
+        <!-- Use the full-instructions section for more detailed instructions that the 
+              Worker can open while working on the task. Including more detailed 
+              instructions and additional examples of good and bad answers here can 
+              help get good results. You can include any HTML here. -->
+              <full-instructions>
+                <body>
+                <pre>
+                Thank you for joining our survey!<br>
+                For a detailed description for what each score should indicate, please check the table below.<br>
+                </pre>
+                <style type="text/css">
+                .tg  {border-collapse:collapse;border-spacing:0;}
+                .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                  overflow:hidden;padding:10px 5px;word-break:normal;}
+                .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                .tg .tg-baqh{text-align:center;vertical-align:top}
+                .tg .tg-ao2g{border-color:#333333;text-align:center;vertical-align:top}
+                .tg .tg-0lax{text-align:left;vertical-align:top}
+                .tg .tg-de2y{border-color:#333333;text-align:left;vertical-align:top}
+                </style>
+                <table class="tg">
+                <thead>
+                  <tr>
+                    <th class="tg-ao2g">SCORE</th>
+                    <th class="tg-ao2g">Desc.</th>
+                    <th class="tg-ao2g">Detailed Desc.</th>
+                    <th class="tg-0lax">Ref text</th>
+                    <th class="tg-0lax">Test audio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="tg-ao2g">5.0</td>
+                    <td class="tg-ao2g">Excellent</td>
+                    <td class="tg-de2y">Pronunciation is very clear and prosody is natural.</td>
+                    <td class="tg-baqh">He was pacing swiftly up and down his room.</td>
+                    <td class="tg-0lax"></td>
+                    <td class="tg-0lax"><audio src="https://github.com/csj6172/Infi_mos/blob/main/_instruction_sample/score_5.wav?raw=true" type="audio/wav" controls></audio></td>
+                  </tr>
+                  <tr></tr>
+                    <td class="tg-ao2g">4.0</td>
+                    <td class="tg-ao2g">Good</td>
+                    <td class="tg-de2y">Pronunciation is clear and prosody is moderate</td>
+                    <td class="tg-baqh">California Democrats get early taste of new clashes with Trump as wildfires rage.</td>
+                    <td class="tg-0lax"></td>
+                    <td class="tg-0lax"><audio src="https://github.com/csj6172/Infi_mos/blob/main/_instruction_sample/score_4.wav?raw=true" type="audio/wav" controls></audio></td>
+                  </tr>
+                  <tr>
+                    <td class="tg-baqh">3.0</td>
+                    <td class="tg-baqh">Fair</td>
+                    <td class="tg-0lax">It has subtle degraded pronunciation and has slightly unnatural prosody.</td>
+                    <td class="tg-baqh">Natty Harmon tried the kitchen pump secretly several times during the evening</td>
+                    <td class="tg-baqh"><audio src="https://github.com/csj6172/Infi_mos/blob/main/_instruction_sample/score_3.wav?raw=true" type="audio/wav" controls></audio></td>
+                  </tr>
+                  <tr>
+                    <td class="tg-baqh">1.0</td>
+                    <td class="tg-baqh">Bad</td>
+                    <td class="tg-0lax">It doesn't match transcription. Completely non speech.</td>
+                    <td class="tg-baqh">And so, howsoever reluctantly, she had gone.</td>
+                    <td class="tg-baqh">
+                      <audio src="https://github.com/csj6172/Infi_mos/blob/main/_instruction_sample/score_1.wav?raw=true" type="audio/wav" controls></audio></td>
+                  </tr>
+                </tbody>
+                </table>
+                </body>
+            </full-instructions> 
+
+    </crowd-classifier>
+</crowd-form>
